@@ -1,0 +1,17 @@
+
+def order_portraits(portraits):
+    
+    all_subjects = set()
+    all_subjects = all_subjects.union(*portraits)
+    print("Needed for portraits:")
+    for subject in all_subjects:
+        print(subject)
+        
+    for portrait in portraits:
+        # If portrait B is a subset of portrait A, A should always come first.
+    
+    return portraits
+
+
+
+print(order_portraits([{"A", "B"}, {"B", "C"}, {"D"}]))
