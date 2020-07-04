@@ -1,0 +1,6 @@
+for each person:
+    Repeat this until no switches are made:
+        locate their final picture
+        for every previous picture that does not include them:
+            Find the total change in wait time if you switch the final picture with that picture:
+            If it is negative or zero, perform the switch
