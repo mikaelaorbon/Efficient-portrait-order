@@ -1,17 +1,54 @@
-
 def order_portraits(portraits):
     
-    all_subjects = set()
-    all_subjects = all_subjects.union(*portraits)
+    all_people = set()
+    all_people = all_people.union(*portraits)
     print("Needed for portraits:")
-    for subject in all_subjects:
-        print(subject)
+    for person in all_people:
+        print(person)
+
+    def find_last_appearance_index(person, ordered_portraits):
+        for index in range(len(ordered_portraits) - 1, -1, -1):
+            if person in ordered_portraits[index]:
+                return index
+
+    def total_active_time(ordered_portraits):
+        active_times = []
+        for person in all_people:
+            last_appearance_index = find_last_appearance_index(person, ordered_portraits)
+            active_time = last_appearance_index + 1
+            active_times.append(active_time)
+        return sum(active_times)
         
-    for portrait in portraits:
-        # If portrait B is a subset of portrait A, A should always come first.
+    ordered_portraits = list(portraits)
+
+    for person in all_people:
+        made_a_switch = True
+        while made_a_switch:
+            last_appearance_index = find_last_appearance_index(person, ordered_portraits)
+            made_a_switch = False
+            for index in range(last_appearance_index):
+                if person not in ordered_portraits[index]:
+                    new_ordered_portraits = ordered_portraits[:index] + [ordered_portraits[last_appearance_index]] + ordered_portraits[index+1:last_appearance_index] + [ordered_portraits[index]] + ordered_portraits[last_appearance_index+1:]
+                    improvement = total_active_time(ordered_portraits) - total_active_time(new_ordered_portraits)
+                    if improvement >= 0:
+                        ordered_portraits = new_ordered_portraits
+                        made_a_switch = True
     
-    return portraits
+    return ordered_portraits, total_active_time(ordered_portraits)
 
 
 
-print(order_portraits([{"A", "B"}, {"B", "C"}, {"D"}]))
+print(order_portraits([
+    {"B", "C", "D", "E", },
+    {"B", "D", },
+    {"B", "C", "D", },
+    {"C", },
+    {"B", "C", "D", "F"},
+    {"B", "C", },
+    {"D", },
+    {"B", "C", "E", "F"},
+    {"E", },
+    {"E", "C"},
+    {"B", "C", "E", },
+    
+]))
