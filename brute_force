@@ -1,0 +1,53 @@
+import itertools
+
+def order_portraits(portraits):
+    
+    all_people = set()
+    all_people = all_people.union(*portraits)
+    print("Needed for portraits:")
+    for person in all_people:
+        print(person)
+
+    def find_last_appearance_index(person, ordered_portraits):
+        for index in range(len(ordered_portraits) - 1, -1, -1):
+            if person in ordered_portraits[index]:
+                return index
+
+    def total_active_time(ordered_portraits):
+        active_times = []
+        for person in all_people:
+            last_appearance_index = find_last_appearance_index(person, ordered_portraits)
+            active_time = last_appearance_index + 1
+            active_times.append(active_time)
+        return sum(active_times)
+        
+    ordered_portraits = list(portraits)
+
+    all_orders = list(itertools.permutations(ordered_portraits))
+    active_time = float("inf")
+
+    for order in all_orders:
+        new_active_time = total_active_time(order)
+        if new_active_time < active_time:
+            ordered_portraits = order
+            active_time = new_active_time
+
+    
+    return ordered_portraits, total_active_time(ordered_portraits)
+
+
+
+print(order_portraits([
+    {"B", "C", "D", "E", },
+    {"B", "D", },
+    {"B", "C", "D", },
+    {"C", },
+    {"B", "C", "D", "F"},
+    {"B", "C", },
+    {"D", },
+    {"B", "C", "E", "F"},
+    {"E", },
+    {"E", "C"},
+    {"B", "C", "E", },
+    
+]))
